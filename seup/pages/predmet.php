@@ -191,8 +191,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Handle document deletion
     if (isset($_POST['action']) && GETPOST('action') === 'delete_document') {
+        // Clean all output buffers before JSON response
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
         header('Content-Type: application/json');
-        ob_end_clean();
         
         $filename = GETPOST('filename', 'alphanohtml');
         $filepath = GETPOST('filepath', 'alphanohtml');
