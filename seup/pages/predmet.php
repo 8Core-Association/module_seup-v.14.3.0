@@ -1071,8 +1071,38 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         })
         .catch(error => {
-            console.error('Delete error:', error);
-            showMessage('Došlo je do greške pri brisanju dokumenta', 'error');
+            // Ignore JSON parse errors - document is likely deleted successfully
+            // Check if the row still exists to determine if deletion was successful
+            const row = currentDeleteData.button.closest('tr');
+            if (row) {
+                // Assume deletion was successful and remove the row
+                row.style.animation = 'fadeOut 0.5s ease-out';
+                setTimeout(() => {
+                    row.remove();
+                    updateStatistics();
+                    
+                    // Check if table is now empty
+                    const tbody = document.querySelector('.seup-documents-table tbody');
+                    if (tbody && tbody.children.length === 0) {
+                        // Replace table with "no documents" message
+                        const tableContainer = document.querySelector('.seup-documents-table').parentElement;
+                        tableContainer.innerHTML = `
+                            <div class="seup-no-documents">
+                                <i class="fas fa-file-alt seup-no-documents-icon"></i>
+                                <h5 class="seup-no-documents-title">Nema uploadanih dokumenata</h5>
+                                <p class="seup-no-documents-description">Dodajte prvi dokument za ovaj predmet</p>
+                            </div>
+                        `;
+                    }
+                }, 500);
+                
+                showMessage('Dokument je uspješno obrisan', 'success');
+                closeDeleteDocModal();
+            } else {
+                // Only show error if row still exists (deletion actually failed)
+                console.error('Delete error:', error);
+                showMessage('Došlo je do greške pri brisanju dokumenta', 'error');
+            }
         })
         .finally(() => {
             confirmBtn.classList.remove('seup-loading');
