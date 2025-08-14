@@ -119,6 +119,21 @@ class Predmet_helper
                 PRIMARY KEY (ID_arhive),
                 KEY fk_predmet_arhiva (ID_predmeta),
                 KEY fk_user_arhiva (fk_user_arhivirao)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8",
+
+            "CREATE TABLE IF NOT EXISTS " . MAIN_DB_PREFIX . "a_document_signatures (
+                rowid int(11) NOT NULL AUTO_INCREMENT,
+                fk_ecm_file int(11) NOT NULL,
+                has_signature tinyint(1) DEFAULT 0,
+                signature_type varchar(100) DEFAULT NULL,
+                signer_name varchar(255) DEFAULT NULL,
+                signature_date datetime DEFAULT NULL,
+                certificate_issuer varchar(255) DEFAULT NULL,
+                date_checked timestamp DEFAULT CURRENT_TIMESTAMP,
+                entity int(11) NOT NULL DEFAULT 1,
+                PRIMARY KEY (rowid),
+                UNIQUE KEY unique_ecm_file (fk_ecm_file),
+                KEY fk_ecm_file_idx (fk_ecm_file)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8"
         ];
 
@@ -402,12 +417,46 @@ class Predmet_helper
             $documentTableHTML .= '<th>Veličina</th>';
             $documentTableHTML .= '<th>Datum</th>';
             $documentTableHTML .= '<th>Kreirao</th>';
+            $documentTableHTML .= '<th><i class="fas fa-certificate me-2"></i>Potpis</th>';
             $documentTableHTML .= '<th>Akcije</th>';
             $documentTableHTML .= '</tr>';
             $documentTableHTML .= '</thead>';
             $documentTableHTML .= '<tbody>';
 
             foreach ($documents as $doc) {
+                // Check digital signature for PDF files
+                $signature_info = null;
+                if (strtolower(pathinfo($doc->filename, PATHINFO_EXTENSION)) === 'pdf') {
+                    require_once __DIR__ . '/digital_signature_helper.class.php';
+                    
+                    // Check if we have signature info in database
+                    if (isset($doc->rowid)) {
+                        $signature_info = Digital_Signature_Helper::getSignatureStatus($db, $doc->rowid);
+                        
+                        // If not in database, check the file and update database
+                        if (!$signature_info) {
+                            $relative_path = self::getPredmetFolderPath($caseId, $db);
+                            $full_path = DOL_DATA_ROOT . '/ecm/' . rtrim($relative_path, '/') . '/' . $doc->filename;
+                            
+                            if (file_exists($full_path)) {
+                                $has_signature = Digital_Signature_Helper::checkDigitalSignature($full_path);
+                                $signature_details = null;
+                                
+                                if ($has_signature) {
+                                    $signature_details = Digital_Signature_Helper::getSignatureDetails($full_path);
+                                }
+                                
+                                Digital_Signature_Helper::updateDocumentSignatureStatus(
+                                    $db, $conf, $doc->rowid, $has_signature, $signature_details
+                                );
+                                
+                                // Refresh signature info
+                                $signature_info = Digital_Signature_Helper::getSignatureStatus($db, $doc->rowid);
+                            }
+                        }
+                    }
+                }
+
                 // Handle different document sources
                 if (isset($doc->source) && $doc->source === 'nextcloud') {
                     if ($doc->edit_url) {
@@ -452,6 +501,24 @@ class Predmet_helper
                 // Created by
                 $created_by = $doc->created_by ?? 'N/A';
                 $documentTableHTML .= '<td><div class="seup-document-user"><i class="fas fa-user me-1"></i>' . htmlspecialchars($created_by) . '</div></td>';
+                
+                // Digital signature status
+                $documentTableHTML .= '<td>';
+                if ($signature_info && $signature_info->has_signature) {
+                    $documentTableHTML .= '<div class="seup-signature-status seup-signature-valid" title="Digitalno potpisan">';
+                    $documentTableHTML .= '<i class="fas fa-certificate me-1"></i>';
+                    $documentTableHTML .= '<span>Potpisan</span>';
+                    if ($signature_info->signer_name) {
+                        $documentTableHTML .= '<br><small class="seup-signer-name">' . htmlspecialchars($signature_info->signer_name) . '</small>';
+                    }
+                    $documentTableHTML .= '</div>';
+                } else {
+                    $documentTableHTML .= '<div class="seup-signature-status seup-signature-none" title="Nije digitalno potpisan">';
+                    $documentTableHTML .= '<i class="fas fa-file me-1"></i>';
+                    $documentTableHTML .= '<span>Nije potpisan</span>';
+                    $documentTableHTML .= '</div>';
+                }
+                $documentTableHTML .= '</td>';
                 
                 $documentTableHTML .= '<td>';
                 $documentTableHTML .= '<div class="seup-document-actions">';
@@ -644,6 +711,29 @@ class Predmet_helper
         return $iconMap[$extension] ?? 'fas fa-file text-muted';
     }
 
+    /**
+     * Get file icon CSS class for styling
+     */
+    public static function getFileIconClass($filename)
+    {
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        
+        $classMap = [
+            'pdf' => 'pdf',
+            'doc' => 'doc',
+            'docx' => 'doc',
+            'xls' => 'xls',
+            'xlsx' => 'xls',
+            'ppt' => 'ppt',
+            'pptx' => 'ppt',
+            'jpg' => 'img',
+            'jpeg' => 'img',
+            'png' => 'img',
+            'gif' => 'img'
+        ];
+        
+        return $classMap[$extension] ?? 'default';
+    }
     /**
      * Archive predmet and move documents
      */
