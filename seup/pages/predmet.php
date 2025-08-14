@@ -822,6 +822,95 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // Upload functionality
+    if (uploadTrigger && documentInput) {
+        uploadTrigger.addEventListener("click", function() {
+            documentInput.click();
+        });
+
+        documentInput.addEventListener("change", function(e) {
+            const allowedTypes = [
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "application/msword",
+                "application/vnd.ms-excel",
+                "application/octet-stream",
+                "application/zip",
+                "application/pdf",
+                "image/jpeg",
+                "image/png"
+            ];
+
+            const allowedExtensions = [
+                ".docx", ".xlsx", ".doc", ".xls",
+                ".pdf", ".jpg", ".jpeg", ".png", ".zip"
+            ];
+
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                const extension = "." + file.name.split(".").pop().toLowerCase();
+
+                if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(extension)) {
+                    showMessage("<?php echo $langs->transnoentities('ErrorInvalidFileTypeJS'); ?>\nAllowed formats: " + allowedExtensions.join(", "), 'error');
+                    this.value = "";
+                    return;
+                }
+
+                if (file.size > 10 * 1024 * 1024) {
+                    showMessage("<?php echo $langs->transnoentities('ErrorFileTooLarge'); ?>", 'error');
+                    this.value = "";
+                    return;
+                }
+
+                // Show upload progress
+                uploadProgress.style.display = 'block';
+                progressFill.style.width = '0%';
+                progressText.textContent = 'Priprema upload...';
+
+                const formData = new FormData();
+                formData.append("document", file);
+                formData.append("token", document.querySelector("input[name='token']").value);
+                formData.append("action", "upload_document");
+                formData.append("case_id", <?php echo $caseId; ?>);
+
+                // Simulate progress
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress > 90) progress = 90;
+                    progressFill.style.width = progress + '%';
+                    progressText.textContent = `Uploading... ${Math.round(progress)}%`;
+                }, 100);
+
+                fetch("", {
+                    method: "POST",
+                    body: formData
+                }).then(response => {
+                    clearInterval(progressInterval);
+                    progressFill.style.width = '100%';
+                    progressText.textContent = 'Upload završen!';
+                    
+                    if (response.ok) {
+                        setTimeout(() => {
+                            uploadProgress.style.display = 'none';
+                            document.getElementById("documentInput").value = "";
+                            showMessage('Dokument je uspješno prenešen!', 'success');
+                            // Auto-refresh documents list after successful upload
+                            refreshDocumentsList();
+                        }, 1000);
+                    } else {
+                        throw new Error('Upload failed');
+                    }
+                }).catch(error => {
+                    clearInterval(progressInterval);
+                    uploadProgress.style.display = 'none';
+                    console.error("Upload error:", error);
+                    showMessage('Greška pri uploadu dokumenta', 'error');
+                });
+            }
+        });
+    }
+
     // Function to refresh documents list (optimized)
     function refreshDocumentsList() {
         const formData = new FormData();
