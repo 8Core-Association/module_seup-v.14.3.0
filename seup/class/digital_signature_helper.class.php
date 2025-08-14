@@ -15,22 +15,57 @@ class Digital_Signature_Helper
     {
         try {
             if (!file_exists($pdfPath)) {
+                dol_syslog("PDF file does not exist: " . $pdfPath, LOG_WARNING);
                 return false;
             }
 
             $content = file_get_contents($pdfPath);
             if ($content === false) {
+                dol_syslog("Cannot read PDF file: " . $pdfPath, LOG_WARNING);
                 return false;
             }
+
+            dol_syslog("Checking digital signature for: " . basename($pdfPath) . " (size: " . strlen($content) . " bytes)", LOG_INFO);
 
             // Check for digital signature indicators
             $hasSignature = (
                 strpos($content, '/ByteRange') !== false &&
-                strpos($content, '/SubFilter') !== false &&
+                (strpos($content, '/SubFilter') !== false || strpos($content, '/Type/Sig') !== false) &&
                 (strpos($content, 'adbe.pkcs7') !== false || 
                  strpos($content, 'ETSI.CAdES') !== false ||
-                 strpos($content, '/Type/Sig') !== false)
+                 strpos($content, '/Type/Sig') !== false ||
+                 strpos($content, '/Filter/Adobe.PPKLite') !== false ||
+                 strpos($content, 'PKCS#7') !== false ||
+                 strpos($content, 'pkcs7') !== false)
             );
+
+            // Additional checks for FINA signatures
+            if (!$hasSignature) {
+                $hasSignature = (
+                    strpos($content, 'Fina') !== false &&
+                    strpos($content, '/ByteRange') !== false
+                ) || (
+                    strpos($content, 'RDC') !== false &&
+                    strpos($content, '/ByteRange') !== false
+                ) || (
+                    strpos($content, '/Sig') !== false &&
+                    strpos($content, '/ByteRange') !== false
+                );
+            }
+
+            dol_syslog("Digital signature check result: " . ($hasSignature ? 'FOUND' : 'NOT FOUND'), LOG_INFO);
+            
+            // Debug: Log what we found
+            $indicators = [];
+            if (strpos($content, '/ByteRange') !== false) $indicators[] = 'ByteRange';
+            if (strpos($content, '/SubFilter') !== false) $indicators[] = 'SubFilter';
+            if (strpos($content, '/Type/Sig') !== false) $indicators[] = 'Type/Sig';
+            if (strpos($content, 'adbe.pkcs7') !== false) $indicators[] = 'adbe.pkcs7';
+            if (strpos($content, '/Filter/Adobe.PPKLite') !== false) $indicators[] = 'Adobe.PPKLite';
+            if (strpos($content, 'Fina') !== false) $indicators[] = 'Fina';
+            if (strpos($content, 'RDC') !== false) $indicators[] = 'RDC';
+            
+            dol_syslog("Found signature indicators: " . implode(', ', $indicators), LOG_INFO);
 
             return $hasSignature;
 
@@ -82,12 +117,18 @@ class Digital_Signature_Helper
             // Try to extract signer name (basic extraction)
             if (preg_match('/\/Name\(([^)]+)\)/', $content, $matches)) {
                 $details['signer_name'] = self::decodePdfString($matches[1]);
+            } elseif (preg_match('/CN=([^,]+)/', $content, $matches)) {
+                $details['signer_name'] = trim($matches[1]);
+            } elseif (strpos($content, 'FINA') !== false) {
+                $details['signer_name'] = 'FINA RDC';
             }
 
             // Try to extract signature date
             if (preg_match('/\/M\(D:(\d{14}[^)]*)\)/', $content, $matches)) {
                 $details['signature_date'] = self::parsePdfDate($matches[1]);
             }
+
+            dol_syslog("Extracted signature details: " . json_encode($details), LOG_INFO);
 
             return $details;
 

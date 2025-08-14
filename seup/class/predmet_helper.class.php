@@ -429,6 +429,8 @@ class Predmet_helper
                 if (strtolower(pathinfo($doc->filename, PATHINFO_EXTENSION)) === 'pdf') {
                     require_once __DIR__ . '/digital_signature_helper.class.php';
                     
+                    dol_syslog("Processing PDF for signature check: " . $doc->filename, LOG_INFO);
+                    
                     // Check if we have signature info in database
                     if (isset($doc->rowid)) {
                         $signature_info = Digital_Signature_Helper::getSignatureStatus($db, $doc->rowid);
@@ -438,12 +440,17 @@ class Predmet_helper
                             $relative_path = self::getPredmetFolderPath($caseId, $db);
                             $full_path = DOL_DATA_ROOT . '/ecm/' . rtrim($relative_path, '/') . '/' . $doc->filename;
                             
+                            dol_syslog("Checking file for signature: " . $full_path, LOG_INFO);
+                            
                             if (file_exists($full_path)) {
                                 $has_signature = Digital_Signature_Helper::checkDigitalSignature($full_path);
                                 $signature_details = null;
                                 
                                 if ($has_signature) {
                                     $signature_details = Digital_Signature_Helper::getSignatureDetails($full_path);
+                                    dol_syslog("Signature found and details extracted", LOG_INFO);
+                                } else {
+                                    dol_syslog("No signature found in file", LOG_INFO);
                                 }
                                 
                                 Digital_Signature_Helper::updateDocumentSignatureStatus(
@@ -452,8 +459,12 @@ class Predmet_helper
                                 
                                 // Refresh signature info
                                 $signature_info = Digital_Signature_Helper::getSignatureStatus($db, $doc->rowid);
+                            } else {
+                                dol_syslog("PDF file not found at: " . $full_path, LOG_WARNING);
                             }
                         }
+                    } else {
+                        dol_syslog("No ECM rowid for document: " . $doc->filename, LOG_WARNING);
                     }
                 }
 

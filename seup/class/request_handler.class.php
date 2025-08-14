@@ -332,12 +332,16 @@ class Request_Handler
       if (strtolower(pathinfo($filename, PATHINFO_EXTENSION)) === 'pdf') {
         require_once __DIR__ . '/digital_signature_helper.class.php';
         
+        dol_syslog("Checking digital signature for uploaded PDF: " . $filename, LOG_INFO);
+        
         $has_signature = Digital_Signature_Helper::checkDigitalSignature($fullpath);
         $signature_details = null;
         
         if ($has_signature) {
           $signature_details = Digital_Signature_Helper::getSignatureDetails($fullpath);
           dol_syslog("Digital signature detected in uploaded PDF: " . $filename, LOG_INFO);
+        } else {
+          dol_syslog("No digital signature found in uploaded PDF: " . $filename, LOG_INFO);
         }
         
         // Update signature status in database
