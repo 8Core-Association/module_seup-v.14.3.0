@@ -427,27 +427,65 @@ class Predmet_helper
                     $documentTableHTML .= '<br><small class="text-muted"><i class="fas fa-tags"></i> ' . htmlspecialchars($doc->tags) . '</small>';
                 }
                 $documentTableHTML .= '</td>';
-                $documentTableHTML .= '<td>' . $file_size . '</td>';
-                $documentTableHTML .= '<td>' . $date_formatted . '</td>';
-                $documentTableHTML .= '<td>' . htmlspecialchars($created_by) . '</td>';
+                
+                // File size
+                $file_size = 'N/A';
+                if (isset($doc->size) && $doc->size > 0) {
+                    $file_size = self::formatFileSize($doc->size);
+                } elseif (isset($doc->filepath)) {
+                    $full_path = DOL_DATA_ROOT . '/ecm/' . rtrim($doc->filepath, '/') . '/' . $doc->filename;
+                    if (file_exists($full_path)) {
+                        $file_size = self::formatFileSize(filesize($full_path));
+                    }
+                }
+                $documentTableHTML .= '<td><span class="seup-document-size">' . $file_size . '</span></td>';
+                
+                // Date formatting
+                $date_formatted = 'N/A';
+                if (isset($doc->date_c)) {
+                    $date_formatted = date('d.m.Y H:i', $doc->date_c);
+                } elseif (isset($doc->last_modified)) {
+                    $date_formatted = date('d.m.Y H:i', strtotime($doc->last_modified));
+                }
+                $documentTableHTML .= '<td><div class="seup-document-date"><i class="fas fa-calendar me-1"></i>' . $date_formatted . '</div></td>';
+                
+                // Created by
+                $created_by = $doc->created_by ?? 'N/A';
+                $documentTableHTML .= '<td><div class="seup-document-user"><i class="fas fa-user me-1"></i>' . htmlspecialchars($created_by) . '</div></td>';
+                
                 $documentTableHTML .= '<td>';
-                $documentTableHTML .= '<div class="seup-action-buttons">';
-                $documentTableHTML .= $edit_button;
-                $documentTableHTML .= '<a href="' . $download_url . '" class="btn btn-outline-primary btn-sm" target="_blank">';
+                $documentTableHTML .= '<div class="seup-document-actions">';
+                
+                // Download button
+                $download_url = DOL_URL_ROOT . '/document.php?modulepart=ecm&file=' . urlencode($relative_path . $doc->filename);
+                $documentTableHTML .= '<a href="' . $download_url . '" class="seup-document-btn seup-document-btn-download" target="_blank" title="Preuzmi">';
                 $documentTableHTML .= '<i class="fas fa-download"></i>';
                 $documentTableHTML .= '</a>';
-                $documentTableHTML .= '<button class="btn btn-outline-danger btn-sm ms-1 delete-document-btn" ';
+                
+                // Edit button (if available)
+                if (isset($doc->edit_url) && !empty($doc->edit_url)) {
+                    $documentTableHTML .= '<a href="' . $doc->edit_url . '" class="seup-document-btn seup-document-btn-edit" target="_blank" title="Uredi u Nextcloud">';
+                    $documentTableHTML .= '<i class="fas fa-edit"></i>';
+                    $documentTableHTML .= '</a>';
+                }
+                
+                // Delete button
+                $documentTableHTML .= '<button class="seup-document-btn seup-document-btn-delete delete-document-btn" ';
                 $documentTableHTML .= 'data-filename="' . htmlspecialchars($doc->filename) . '" ';
-                $documentTableHTML .= 'data-filepath="' . htmlspecialchars($relative_path) . '" ';
+                $documentTableHTML .= 'data-filepath="' . htmlspecialchars($doc->filepath ?? $relative_path) . '" ';
                 $documentTableHTML .= 'title="Obriši dokument">';
                 $documentTableHTML .= '<i class="fas fa-trash"></i>';
                 $documentTableHTML .= '</button>';
+                
+                // Additional Nextcloud indicators
                 if (isset($doc->comments_count) && $doc->comments_count > 0) {
-                    $documentTableHTML .= '<span class="badge bg-secondary ms-1" title="Komentari">' . $doc->comments_count . '</span>';
+                    $documentTableHTML .= '<span class="seup-document-badge seup-badge-info" title="Komentari"><i class="fas fa-comments"></i> ' . $doc->comments_count . '</span>';
                 }
                 if (isset($doc->is_shared) && $doc->is_shared) {
-                    $documentTableHTML .= '<i class="fas fa-share-alt ms-1 text-warning" title="Dijeljeno"></i>';
+                    $documentTableHTML .= '<span class="seup-document-badge seup-badge-warning" title="Dijeljeno"><i class="fas fa-share-alt"></i></span>';
                 }
+                
+                $documentTableHTML .= '</div>'; // seup-document-actions
                 $documentTableHTML .= '</td>';
                 $documentTableHTML .= '</tr>';
             }

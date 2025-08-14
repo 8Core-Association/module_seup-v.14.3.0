@@ -1,0 +1,271 @@
+/**
+ * Prilozi (Documents) Specific Styles
+ * (c) 2025 8Core Association
+ */
+
+/* Document action buttons - modern style like predmeti.php */
+.seup-document-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.seup-document-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: var(--text-xs);
+  text-decoration: none;
+  padding: 0;
+}
+
+.seup-document-btn:hover {
+  transform: scale(1.1);
+  text-decoration: none;
+}
+
+.seup-document-btn-download {
+  background: var(--primary-100);
+  color: var(--primary-600);
+}
+
+.seup-document-btn-download:hover {
+  background: var(--primary-200);
+  color: var(--primary-700);
+}
+
+.seup-document-btn-edit {
+  background: var(--success-100);
+  color: var(--success-600);
+}
+
+.seup-document-btn-edit:hover {
+  background: var(--success-200);
+  color: var(--success-700);
+}
+
+.seup-document-btn-delete {
+  background: var(--error-100);
+  color: var(--error-600);
+}
+
+.seup-document-btn-delete:hover {
+  background: var(--error-200);
+  color: var(--error-700);
+}
+
+/* File type icons in document list */
+.seup-file-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  margin-right: var(--space-2);
+  flex-shrink: 0;
+}
+
+.seup-file-icon.pdf {
+  background: var(--error-100);
+  color: var(--error-700);
+}
+
+.seup-file-icon.doc {
+  background: var(--primary-100);
+  color: var(--primary-700);
+}
+
+.seup-file-icon.xls {
+  background: var(--success-100);
+  color: var(--success-700);
+}
+
+.seup-file-icon.img {
+  background: var(--accent-100);
+  color: var(--accent-700);
+}
+
+.seup-file-icon.default {
+  background: var(--neutral-100);
+  color: var(--neutral-600);
+}
+
+/* Document name styling */
+.seup-document-name {
+  font-weight: var(--font-medium);
+  color: var(--secondary-900);
+  display: flex;
+  align-items: center;
+}
+
+/* Document table enhancements */
+.seup-documents-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--space-4);
+}
+
+.seup-documents-table thead {
+  background: linear-gradient(135deg, var(--secondary-500), var(--secondary-600));
+  color: white;
+}
+
+.seup-documents-table th {
+  padding: var(--space-4);
+  text-align: left;
+  font-weight: var(--font-semibold);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.seup-documents-table td {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--neutral-100);
+  font-size: var(--text-sm);
+  vertical-align: middle;
+}
+
+.seup-documents-table tr:hover {
+  background: var(--primary-25);
+  transform: translateX(2px);
+  transition: all var(--transition-fast);
+}
+
+.seup-documents-table tbody tr:nth-child(even) {
+  background: var(--neutral-25);
+}
+
+.seup-documents-table tbody tr:nth-child(odd) {
+  background: white;
+}
+
+/* Document metadata styling */
+.seup-document-date {
+  color: var(--secondary-600);
+  font-size: var(--text-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.seup-document-user {
+  color: var(--secondary-700);
+  font-size: var(--text-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.seup-document-size {
+  color: var(--secondary-600);
+  font-size: var(--text-xs);
+  font-family: var(--font-family-mono);
+}
+
+/* Loading states for document buttons */
+.seup-document-btn.seup-loading {
+  position: relative;
+  color: transparent;
+}
+
+.seup-document-btn.seup-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Responsive design for document table */
+@media (max-width: 768px) {
+  .seup-documents-table {
+    font-size: var(--text-xs);
+  }
+  
+  .seup-documents-table th,
+  .seup-documents-table td {
+    padding: var(--space-2);
+  }
+  
+  .seup-document-actions {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  
+  .seup-document-btn {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .seup-documents-table {
+    overflow-x: auto;
+    display: block;
+    white-space: nowrap;
+  }
+  
+  .seup-documents-table thead,
+  .seup-documents-table tbody,
+  .seup-documents-table th,
+  .seup-documents-table td,
+  .seup-documents-table tr {
+    display: block;
+  }
+  
+  .seup-documents-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  
+  .seup-documents-table tr {
+    border: 1px solid var(--neutral-200);
+    margin-bottom: var(--space-2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+  }
+  
+  .seup-documents-table td {
+    border: none;
+    position: relative;
+    padding-left: 30%;
+    white-space: normal;
+  }
+  
+  .seup-documents-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 6px;
+    width: 25%;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-weight: var(--font-semibold);
+    color: var(--secondary-700);
+  }
+}
+
+/* Animation keyframes */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
