@@ -1,0 +1,216 @@
+# Translation file
+
+#
+# Generic
+#
+
+# Module label 'ModuleMyModuleName'
+ModuleMyModuleName = MyModule
+# Module description 'ModuleMyModuleDesc'
+ModuleMyModuleDesc = MyModule description
+
+#
+# Admin page
+#
+MyModuleSetup = MyModule setup
+Settings = Settings
+MyModuleSetupPage = MyModule setup page
+NewSection=New section
+MYMODULE_MYPARAM1 = My param 1
+MYMODULE_MYPARAM1Tooltip = My param 1 tooltip
+MYMODULE_MYPARAM2=My param 2
+MYMODULE_MYPARAM2Tooltip=My param 2 tooltip
+
+
+#
+# About page
+#
+About = About
+MyModuleAbout = About MyModule
+MyModuleAboutPage = MyModule about page
+
+#
+# Sample page
+#
+MyModuleArea = Home MyModule
+MyPageName = My page name
+
+#
+# Sample widget
+#
+MyWidget = My widget
+MyWidgetDescription = My widget description
+
+
+OdaberiteKorisnika=Morate odabrati korisnika
+UnesiteOznaku=Morate unijeti oznaku
+UspjesnoDodano=Oznaka uspješno dodana
+UspjesnoAzurirano=Oznaka uspješno ažurirana
+UspjesnoObrisano=Oznaka uspješno obrisana
+
+Oznake=Oznake
+Tagovi=Tagovi
+Tag=Oznaka
+UnesiNoviTag=Unesi novu oznaku
+DodajTag=Dodaj oznaku
+TagoviHelpText=Unesite naziv nove oznake i pritisnite Dodaj oznaku. Oznake mogu biti korištene za kategorizaciju predmeta i dokumenata.
+
+ID=ID
+Klasa=Klasa
+NazivPredmeta=Naziv predmeta
+Ustanova=Ustanova
+Zaposlenik=Zaposlenik
+DatumOtvaranja=Datum otvaranja
+Actions=Akcije
+ViewDetails=Pregled detalja
+Edit=Uredi
+CloseCase=Zatvori predmet
+NoOpenCases=Nema otvorenih predmeta
+CaseCreatedSuccessfully=Predmet uspješno kreiran
+ConfirmDeleteTag=Yeste li sigurni da zelite obrisati tag?
+TagDeletedSuccessfully=Tag uspješno obrisan
+ErrorTagNotDeleted=Neuspješno brisanje taga
+
+OpenCases=Otvoreni predmeti
+NewCase=Novi predmet
+ShowingCases=Prikazano %d predmeta
+ExportExcel=Izvoz u Excel
+ID=ID
+Klasa=Klasa
+NazivPredmeta=Naziv predmeta
+Ustanova=Ustanova
+Zaposlenik=Zaposlenik
+DatumOtvaranja=Datum otvaranja
+Actions=Akcije
+ViewDetails=Pregled detalja
+Edit=Uredi
+CloseCase=Zatvori predmet
+NoOpenCases=Nema otvorenih predmeta
+
+; seupindex.php translations
+Dokumentiuprilozima=Dokumenti u prilozima
+Aktiiprilozi=Akti i prilozi
+Predpregled=Predpregled
+Štagod=Šta god
+Statističkipodaci=Statistički podaci
+Dobrodošli=Dobrodošli
+OtvoriPredmete=Otvori Predmete
+KreirajPDF=Kreiraj PDF
+
+; novi_predmet.php translations
+Tagovi=Tagovi
+UnesiNoviTag=Unesi novi tag
+DodajTag=Dodaj tag
+TagoviHelpText=Oznake pomažu u kategorizaciji i pretraživanju predmeta
+ExistingTags=Postojeće oznake
+NoTagsAvailable=Nema dostupnih oznaka
+ErrorLoadingTags=Greška pri učitavanju oznaka
+Klasabroj=Klasa broj
+Sadrzaj=Sadržaj
+OdaberiSadrzaj=Odaberi sadržaj
+DosjeBroj=Dosje broj
+OdaberiDosjeBroj=Odaberi dosje broj
+Zaposlenik=Zaposlenik
+Stranka=Stranka
+Oznake=Oznake
+Odaberioznake=Odaberi oznake
+Dodaj=Dodaj
+NazivPredmeta=Naziv predmeta
+DatumOtvaranjaPredmeta=Datum otvaranja predmeta
+OtvoriPredmet=Otvori predmet
+UploadDocument=Dodaj dokument
+ErrorInvalidFileTypeJS=Nevažeći format datoteke!
+ErrorFileTooLarge=Datoteka je prevelika!
+CaseCreatedSuccessfully=Predmet uspješno kreiran
+ErrorTagTooShort=Oznaka mora imati najmanje 2 znaka
+ErrorTagAlreadyExists=Oznaka već postoji
+TagAddedSuccessfully=Oznaka uspješno dodana
+ErrorTagNotAdded=Greška pri dodavanju oznake
+ErrorDatabaseRequest=Greška u zahtjevu baze podataka
+ConfirmDeleteTag=Jeste li sigurni da želite izbrisati ovu oznaku?
+TagDeletedSuccessfully=Oznaka uspješno izbrisana
+ErrorTagNotDeleted=Greška pri brisanju oznake
+ErrorDeletingTagAssociations=Greška pri brisanju povezanih oznaka
+
+
+; predmet.php translations
+UploadaniDokumenti=Uploadani Dokumenti
+
+; predmet_helper.class.php translations
+NoDocumentsFound=Nema Uploadanih Dokumenata
+
+; plan_klasifikacijskih_oznaka translations
+NewClassificationMark=Nova Klasifikacijska Oznaka
+ClassificationMarks=Klasifikacijske Oznake
+ShowingMarks=Prikazano Klasifikacijskih Oznaka
+klasaBr=Klasa broj
+Sadrzaj=Sadrzaj
+dosjeBroj=Dosje broj
+vrijemeCuvanja=Vrijeme Čuvanja
+Opis=Opis
+
+; Nextcloud integration
+NEXTCLOUD_URL=Nextcloud URL
+NEXTCLOUD_URLTooltip=URL vašeg Nextcloud servera (npr. https://cloud.example.com)
+NEXTCLOUD_USERNAME=Nextcloud korisničko ime
+NEXTCLOUD_USERNAMETooltip=Korisničko ime za pristup Nextcloud API-ju
+NEXTCLOUD_PASSWORD=Nextcloud lozinka/token
+NEXTCLOUD_PASSWORDTooltip=App password ili API token za Nextcloud pristup
+NEXTCLOUD_ENABLED=Omogući Nextcloud integraciju
+NEXTCLOUD_ENABLEDTooltip=Aktiviraj sinkronizaciju dokumenata s Nextcloud serverom
+
+; Document sources
+DocumentSource=Izvor
+NextcloudDocument=Nextcloud dokument
+DolibarrDocument=Dolibarr dokument
+EditInNextcloud=Uredi u Nextcloud
+ViewInNextcloud=Otvori u Nextcloud
+SyncWithNextcloud=Sinkroniziraj s Nextcloud
+NextcloudSyncSuccess=Uspješno sinkronizirano s Nextcloud
+NextcloudSyncError=Greška pri sinkronizaciji s Nextcloud
+
+# Admin configuration
+NextcloudIntegration=Nextcloud Integracija
+NextcloudConfigurationPage=Konfiguracija Nextcloud integracije za SEUP modul
+EnableNextcloudIntegration=Omogući Nextcloud integraciju
+EnableNextcloudIntegrationTooltip=Omogućuje sinkronizaciju dokumenata s Nextcloud serverom
+NextcloudURL=Nextcloud URL
+NextcloudURLTooltip=URL vašeg Nextcloud servera (npr. https://cloud.example.com)
+NextcloudUsername=Nextcloud korisničko ime
+NextcloudUsernameTooltip=Korisničko ime za pristup Nextcloud API-ju
+NextcloudPassword=Nextcloud lozinka/token
+NextcloudPasswordTooltip=App password ili API token za Nextcloud pristup (generirajte u Nextcloud Settings > Security)
+TestConnection=Testiraj vezu
+TestNextcloudConnection=Testiraj Nextcloud vezu
+NextcloudConnectionSuccess=Nextcloud veza uspješna
+NextcloudConnectionFailed=Nextcloud veza neuspješna
+NextcloudConnectionError=Greška pri povezivanju s Nextcloud
+NextcloudStatus=Nextcloud status
+Configured=Konfigurirano
+PartiallyConfigured=Djelomično konfigurirano
+FilesFound=datoteka pronađeno
+ErrorInvalidURL=Neispravan URL format
+
+# ECM Nextcloud Mount
+ECM_IS_NEXTCLOUD_MOUNT=ECM je Nextcloud eksterni disk
+ECM_IS_NEXTCLOUD_MOUNTTooltip=Označite ako je Dolibarr ECM direktorij montiran kao Nextcloud vanjska pohrana
+ECMNextcloudMountDetected=Detektiran je ECM kao Nextcloud mount
+ECMNextcloudMountNotDetected=ECM nije Nextcloud mount
+NextcloudUploadSkipped=Nextcloud upload preskočen - ECM je već Nextcloud
+NextcloudMetadataEnhanced=ECM zapisi obogaćeni Nextcloud metapodacima
+
+# ECM Scanner
+SEUP_ECM_AUTO_SCAN=Automatsko skeniranje ECM mapa
+SEUP_ECM_AUTO_SCANTooltip=Automatski skeniraj ECM mape za nove datoteke pri pristupu stranicama predmeta
+ECM_SCAN_ALL=Skeniraj sve ECM mape
+ScanECMFolders=Skeniraj ECM mape
+RescanECM=Skeniraj ECM
+ECMScanComplete=ECM skeniranje završeno
+FilesFoundInFilesystem=datoteka pronađeno u filesystem-u
+FilesInDatabase=datoteka u bazi
+FilesAdded=datoteka dodano
+ECMScanError=Greška pri skeniranju ECM-a
+ECMAutoScanEnabled=Automatsko ECM skeniranje omogućeno
+ECMAutoScanDisabled=Automatsko ECM skeniranje onemogućeno
+ScanningECMFolders=Skeniram ECM mape...
+ECMScanResults=Rezultati ECM skeniranja

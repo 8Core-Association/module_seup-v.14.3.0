@@ -1,0 +1,7 @@
+{
+    "name": "seup/onlyoffice",
+    "description": "OnlyOffice integration for Dolibarr",
+    "require": {
+        "firebase/php-jwt": "^6.0"
+    }
+}

@@ -1,0 +1,81 @@
+= SEUP =
+:subtitle: SEUP DOCUMENTATION
+:source-highlighter: rouge
+:companyname: Informatička Udruga 8Core
+:corpname: Informatička Udruga 8Core
+:orgname: Informatička Udruga 8Core
+:creator: SuperAdmin
+:title: Documentation of module SEUP
+:subject: This document is the document of module SEUP.
+:keywords: SEUP
+// Date du document :
+:docdate: 2025-04-23
+:toc: manual
+:toc-placement: preamble
+
+
+== TOPIC OF DOCUMENT
+
+This is the documentation of module SEUP
+
+
+*Log of versions of document*
+
+[options="header",format="csv"]
+|=== 
+Author, Date, Version
+--- SuperAdmin   ---, 2025-04-23, Version 1.0
+|===
+
+
+[NOTE]
+==============
+This document was generated using Dolibarr ERP CRM process
+==============
+
+
+:toc: manual
+:toc-placement: preamble
+
+
+
+== INTRODUCTION
+
+//include::README.md[]
+__README__
+
+== DATA SPECIFICATIONS
+
+__DATA_SPECIFICATION__
+
+
+== MATRIX OF PERMISSIONS
+
+[options='header',grid=rows,width=60%,caption=Organisation]
+|===
+|Objects|Permission
+|*Read objects of SEUP*| 1 , 
+|*// In php code, permission will be checked by test if ($user->hasRight('seup',myobject',read'))
+		1*|myobject , 
+|*myobject*|Create/Update objects of SEUP , 
+|*Delete objects of SEUP*|// In php code, permission will be checked by test if ($user->hasRight('seup',myobject',write'))
+		1 , 
+|*// In php code, permission will be checked by test if ($user->hasRight('seup',myobject',delete'))
+		1*|myobject , 
+
+|===
+
+
+
+== OTHER
+
+__API_DOC__
+
+
+== CHANGELOG
+
+
+# CHANGELOG MODULE SEUP FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
+ 1.0
+Initial version
+

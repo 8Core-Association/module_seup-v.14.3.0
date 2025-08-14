@@ -1,0 +1,42 @@
+# Translation file
+
+#
+# Generic
+#
+
+# Module label 'ModuleSEUPName'
+ModuleSEUPName = SEUP
+# Module description 'ModuleSEUPDesc'
+ModuleSEUPDesc = SEUP description
+
+#
+# Admin page
+#
+SEUPSetup = SEUP setup
+Settings = Settings
+SEUPSetupPage = SEUP setup page
+NewSection=New section
+SEUP_MYPARAM1 = My param 1
+SEUP_MYPARAM1Tooltip = My param 1 tooltip
+SEUP_MYPARAM2=My param 2
+SEUP_MYPARAM2Tooltip=My param 2 tooltip
+
+
+#
+# About page
+#
+About = About
+SEUPAbout = About SEUP
+SEUPAboutPage = SEUP about page
+
+#
+# Sample page
+#
+SEUPArea = Home SEUP
+MyPageName = My page name
+
+#
+# Sample widget
+#
+MyWidget = My widget
+MyWidgetDescription = My widget description

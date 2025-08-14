@@ -1,0 +1,160 @@
+/* Ghost button s naglašenim obrubom i hover pozadinom */
+.ghost-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 2px solid #007bff;
+  /* plavi obrub */
+  background-color: transparent;
+  color: #007bff;
+  /* plava boja teksta */
+  text-decoration: none;
+  /* nema podvlačenja */
+  border-radius: 0.25rem;
+  /* blago zaobljeni kutovi */
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+.ghost-button:hover,
+.ghost-button:focus {
+  background-color: #007bff;
+  /* plava pozadina */
+  color: #ffffff;
+  /* bijeli tekst */
+  text-decoration: none;
+  /* pazi da ne dođe do podvlačenja */
+}
+
+.custom-container {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+
+.mb-3 {
+  position: relative;
+}
+
+.autocomplete-dropdown {
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.autocomplete-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.autocomplete-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* Autocomplete dropdown styles */
+#stranka-results .dropdown-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#stranka-results .dropdown-item:hover {
+  background-color: #82bff8;
+}
+
+#stranka-results .company-name {
+  font-weight: 500;
+}
+
+#stranka-results .company-vat {
+  font-size: 0.8rem;
+  color: #0b0c0c;
+}
+
+/* Select2 styling */
+.select2-container--default .select2-selection--single {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  height: 38px;
+  padding: 5px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 36px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 26px;
+  padding-left: 8px;
+}
+
+/* Make button and dropdown the same height */
+#strankaContainer > .d-flex {
+    align-items: stretch;
+}
+
+#strankaContainer .select2-container {
+    height: 100% !important;
+    display: flex !important;
+    align-items: center;
+}
+
+#strankaContainer .select2-container .select2-selection--single {
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.25rem !important;
+}
+
+#strankaContainer .select2-container .select2-selection__rendered {
+    padding: 0 8px !important;
+    line-height: 1.5 !important;
+}
+
+#strankaContainer .d-flex > .d-flex {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#strankaCheckLabel {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.5rem !important;
+}
+
+/* Ensure consistent heights */
+.match-height {
+    height: 38px; /* Match Bootstrap form control height */
+    display: flex;
+    align-items: center;
+}
+
+/* Adjust button padding to match */
+#strankaCheckLabel {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+    height: 100%;
+}
+
+/* Fix border when focused */
+#strankaContainer .select2-container--focus .select2-selection--single {
+    border-color: #86b7fe !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+    outline: 0;
+}
