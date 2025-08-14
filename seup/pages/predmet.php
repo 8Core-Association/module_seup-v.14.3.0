@@ -313,7 +313,7 @@ print '<div class="seup-settings-content">';
 // Header section
 if ($caseDetails) {
     print '<div class="seup-settings-header">';
-    print '<h1 class="seup-settings-title">Predmet #' . $caseDetails->ID_predmeta . '</h1>';
+    print '<h1 class="seup-settings-title" style="font-size: var(--text-2xl);">Klasa: ' . htmlspecialchars($caseDetails->klasa) . '</h1>';
     print '<p class="seup-settings-subtitle">' . htmlspecialchars($caseDetails->naziv_predmeta) . '</p>';
     print '</div>';
 } else {
