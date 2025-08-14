@@ -191,8 +191,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Handle document deletion
     if (isset($_POST['action']) && GETPOST('action') === 'delete_document') {
-        // Clean all output buffers before JSON response
-        while (ob_get_level()) {
+        // Clean all output buffers FIRST
+        while (ob_get_level() > 0) {
             ob_end_clean();
         }
         header('Content-Type: application/json');
