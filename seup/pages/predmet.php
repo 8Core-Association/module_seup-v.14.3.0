@@ -205,24 +205,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $db->begin();
             
-            // Debug logging - what we're looking for
-            dol_syslog("DELETE DEBUG: Looking for file - filename: '" . $filename . "', filepath: '" . $filepath . "'", LOG_INFO);
-            dol_syslog("DELETE DEBUG: After rtrim - filepath: '" . rtrim($filepath, '/') . "'", LOG_INFO);
-            dol_syslog("DELETE DEBUG: Entity: " . $conf->entity, LOG_INFO);
+            // Debug info for JSON response
+            $debug_info = [
+                'looking_for_filename' => $filename,
+                'looking_for_filepath' => $filepath,
+                'rtrim_filepath' => rtrim($filepath, '/'),
+                'entity' => $conf->entity
+            ];
             
-            // Check what's actually in the database
+            // Check what's actually in the database  
             $check_sql = "SELECT rowid, filename, filepath FROM " . MAIN_DB_PREFIX . "ecm_files 
                          WHERE filename = '" . $db->escape($filename) . "'
                          AND entity = " . $conf->entity;
             $check_resql = $db->query($check_sql);
+            $found_records = [];
             if ($check_resql) {
-                $found_records = 0;
                 while ($check_obj = $db->fetch_object($check_resql)) {
-                    $found_records++;
-                    dol_syslog("DELETE DEBUG: Found in DB - rowid: " . $check_obj->rowid . ", filename: '" . $check_obj->filename . "', filepath: '" . $check_obj->filepath . "'", LOG_INFO);
+                    $found_records[] = [
+                        'rowid' => $check_obj->rowid,
+                        'filename' => $check_obj->filename,
+                        'filepath' => $check_obj->filepath
+                    ];
                 }
-                dol_syslog("DELETE DEBUG: Total records found with filename '" . $filename . "': " . $found_records, LOG_INFO);
             }
+            $debug_info['found_in_db'] = $found_records;
             
             // Delete from ECM database first
             $sql = "DELETE FROM " . MAIN_DB_PREFIX . "ecm_files 
@@ -230,19 +236,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     AND filename = '" . $db->escape($filename) . "'
                     AND entity = " . $conf->entity;
             
-            dol_syslog("DELETE DEBUG: SQL query: " . $sql, LOG_INFO);
+            $debug_info['delete_sql'] = $sql;
             
             $db_deleted = $db->query($sql);
             $affected_rows = $db->affected_rows($resql ?? null);
-            dol_syslog("DELETE DEBUG: Query result: " . ($db_deleted ? 'SUCCESS' : 'FAILED') . ", Affected rows: " . $affected_rows, LOG_INFO);
+            $debug_info['query_result'] = $db_deleted ? 'SUCCESS' : 'FAILED';
+            $debug_info['affected_rows'] = $affected_rows;
             
             if (!$db_deleted) {
-                dol_syslog("DELETE DEBUG: Database error: " . $db->lasterror(), LOG_ERR);
+                $debug_info['db_error'] = $db->lasterror();
                 throw new Exception('Greška pri brisanju iz baze: ' . $db->lasterror());
             }
             
             if ($affected_rows == 0) {
-                dol_syslog("DELETE DEBUG: WARNING - No rows affected by delete query!", LOG_WARNING);
+                $debug_info['warning'] = 'No rows affected by delete query!';
                 // Don't throw exception, just log warning since file might not be in DB
             }
             
@@ -261,13 +268,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'success' => true,
                 'message' => 'Dokument je uspješno obrisan',
                 'file_deleted' => $file_deleted,
-                'db_deleted' => true
+                'db_deleted' => true,
+                'debug' => $debug_info
             ]);
             
         } catch (Exception $e) {
             $db->rollback();
-            dol_syslog("Delete document error: " . $e->getMessage(), LOG_ERR);
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+            echo json_encode([
+                'success' => false, 
+                'error' => $e->getMessage(),
+                'debug' => $debug_info ?? []
+            ]);
         }
         exit;
     }
