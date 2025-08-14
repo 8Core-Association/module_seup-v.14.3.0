@@ -410,20 +410,13 @@ class Predmet_helper
             foreach ($documents as $doc) {
                 // Handle different document sources
                 if (isset($doc->source) && $doc->source === 'nextcloud') {
-                    $download_url = $doc->download_url;
-                    $file_size = self::formatFileSize($doc->size);
-                    $date_formatted = date('d.m.Y H:i', strtotime($doc->last_modified));
-                    $created_by = 'Nextcloud';
-                    $edit_button = $doc->edit_url ? 
-                        '<a href="' . $doc->edit_url . '" class="btn btn-outline-success btn-sm me-1" target="_blank" title="Uredi u Nextcloud"><i class="fas fa-edit"></i></a>' : '';
+                    if ($doc->edit_url) {
+                        $documentTableHTML .= '<a href="' . $doc->edit_url . '" class="seup-document-action-btn seup-document-btn-edit" target="_blank" title="Uredi u Nextcloud">';
+                        $documentTableHTML .= '<i class="fas fa-edit"></i>';
+                        $documentTableHTML .= '</a>';
+                    }
                 } else {
-                    // Dolibarr ECM document
-                    $relative_path = self::getPredmetFolderPath($caseId, $db);
-                    $download_url = DOL_URL_ROOT . '/document.php?modulepart=ecm&file=' . urlencode($relative_path . $doc->filename);
-                    $file_size = 'N/A';
-                    $date_formatted = dol_print_date($doc->date_c, 'dayhour');
-                    $created_by = $doc->created_by ?: 'N/A';
-                    $edit_button = '';
+                    // No edit button for Dolibarr ECM documents for now
                 }
                 
                 $documentTableHTML .= '<tr>';
@@ -438,6 +431,7 @@ class Predmet_helper
                 $documentTableHTML .= '<td>' . $date_formatted . '</td>';
                 $documentTableHTML .= '<td>' . htmlspecialchars($created_by) . '</td>';
                 $documentTableHTML .= '<td>';
+                $documentTableHTML .= '<div class="seup-action-buttons">';
                 $documentTableHTML .= $edit_button;
                 $documentTableHTML .= '<a href="' . $download_url . '" class="btn btn-outline-primary btn-sm" target="_blank">';
                 $documentTableHTML .= '<i class="fas fa-download"></i>';

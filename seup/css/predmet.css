@@ -318,13 +318,67 @@
   font-size: var(--text-xs);
 }
 
-/* Action Buttons */
+/* Document Action Buttons */
 .seup-action-buttons {
   display: flex;
   gap: var(--space-2);
   flex-wrap: wrap;
 }
 
+.seup-document-action-btn {
+  padding: var(--space-2) var(--space-4);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  border-radius: var(--radius-md);
+}
+
+.seup-document-btn-download {
+  background: var(--primary-100);
+  color: var(--primary-600);
+}
+
+.seup-document-btn-download:hover {
+  background: var(--primary-200);
+  color: var(--primary-700);
+  transform: scale(1.1);
+  text-decoration: none;
+}
+
+.seup-document-btn-edit {
+  background: var(--success-100);
+  color: var(--success-600);
+}
+
+.seup-document-btn-edit:hover {
+  background: var(--success-200);
+  color: var(--success-700);
+  transform: scale(1.1);
+  text-decoration: none;
+}
+
+.seup-document-btn-delete {
+  background: var(--error-100);
+  color: var(--error-600);
+}
+
+.seup-document-btn-delete:hover {
+  background: var(--error-200);
+  color: var(--error-700);
+  transform: scale(1.1);
+}
+
+/* Action Buttons (general) */
 .seup-action-btn {
   padding: var(--space-2) var(--space-4);
   border: none;
@@ -380,22 +434,6 @@
   text-decoration: none;
 }
 
-.seup-btn-download {
-  background: var(--accent-100);
-  color: var(--accent-700);
-  border: 1px solid var(--accent-200);
-  width: 40px;
-  height: 40px;
-  justify-content: center;
-  border-radius: var(--radius-md);
-}
-
-.seup-btn-download:hover {
-  background: var(--accent-200);
-  color: var(--accent-800);
-  transform: scale(1.1);
-  text-decoration: none;
-}
 
 /* Preview Section */
 .seup-preview-container {

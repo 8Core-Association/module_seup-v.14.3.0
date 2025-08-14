@@ -682,7 +682,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         setTimeout(() => {
                             uploadProgress.style.display = 'none';
                             document.getElementById("documentInput").value = "";
-                            showMessage('Dokument je uspješno uploadovan!', 'success');
+                            showMessage('Dokument je uspješno prenešen!', 'success');
                             // Auto-refresh documents list after successful upload
                             refreshDocumentsList();
                         }, 1000);
