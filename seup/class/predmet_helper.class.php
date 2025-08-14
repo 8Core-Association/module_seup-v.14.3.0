@@ -445,7 +445,7 @@ class Predmet_helper
                 if (isset($doc->date_c)) {
                     $date_formatted = date('d.m.Y H:i', (int)$doc->date_c);
                 } elseif (isset($doc->last_modified)) {
-                    $date_formatted = date('d.m.Y H:i', (int)strtotime($doc->last_modified));
+                    $date_formatted = date('d.m.Y H:i', strtotime($doc->last_modified));
                 }
                 $documentTableHTML .= '<td><div class="seup-document-date"><i class="fas fa-calendar me-1"></i>' . $date_formatted . '</div></td>';
                 
