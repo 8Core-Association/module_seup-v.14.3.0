@@ -205,15 +205,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $db->begin();
             
+            // Debug logging - what we're looking for
+            dol_syslog("DELETE DEBUG: Looking for file - filename: '" . $filename . "', filepath: '" . $filepath . "'", LOG_INFO);
+            dol_syslog("DELETE DEBUG: After rtrim - filepath: '" . rtrim($filepath, '/') . "'", LOG_INFO);
+            dol_syslog("DELETE DEBUG: Entity: " . $conf->entity, LOG_INFO);
+            
+            // Check what's actually in the database
+            $check_sql = "SELECT rowid, filename, filepath FROM " . MAIN_DB_PREFIX . "ecm_files 
+                         WHERE filename = '" . $db->escape($filename) . "'
+                         AND entity = " . $conf->entity;
+            $check_resql = $db->query($check_sql);
+            if ($check_resql) {
+                $found_records = 0;
+                while ($check_obj = $db->fetch_object($check_resql)) {
+                    $found_records++;
+                    dol_syslog("DELETE DEBUG: Found in DB - rowid: " . $check_obj->rowid . ", filename: '" . $check_obj->filename . "', filepath: '" . $check_obj->filepath . "'", LOG_INFO);
+                }
+                dol_syslog("DELETE DEBUG: Total records found with filename '" . $filename . "': " . $found_records, LOG_INFO);
+            }
+            
             // Delete from ECM database first
             $sql = "DELETE FROM " . MAIN_DB_PREFIX . "ecm_files 
                     WHERE filepath = '" . $db->escape(rtrim($filepath, '/')) . "'
                     AND filename = '" . $db->escape($filename) . "'
                     AND entity = " . $conf->entity;
             
+            dol_syslog("DELETE DEBUG: SQL query: " . $sql, LOG_INFO);
+            
             $db_deleted = $db->query($sql);
+            $affected_rows = $db->affected_rows($resql ?? null);
+            dol_syslog("DELETE DEBUG: Query result: " . ($db_deleted ? 'SUCCESS' : 'FAILED') . ", Affected rows: " . $affected_rows, LOG_INFO);
+            
             if (!$db_deleted) {
+                dol_syslog("DELETE DEBUG: Database error: " . $db->lasterror(), LOG_ERR);
                 throw new Exception('Greška pri brisanju iz baze: ' . $db->lasterror());
+            }
+            
+            if ($affected_rows == 0) {
+                dol_syslog("DELETE DEBUG: WARNING - No rows affected by delete query!", LOG_WARNING);
+                // Don't throw exception, just log warning since file might not be in DB
             }
             
             // Delete from filesystem
