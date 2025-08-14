@@ -1065,6 +1065,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 
                 showMessage(data.message, 'success');
                 closeDeleteDocModal();
+                closeDeleteDocModal();
             } else {
                 showMessage('Greška pri brisanju: ' + data.error, 'error');
             }
